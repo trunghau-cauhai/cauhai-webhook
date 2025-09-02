@@ -1,13 +1,14 @@
 {
   "name": "caha-webhook",
   "version": "1.0.0",
-  "description": "Webhook cho Facebook Messenger",
-  "main": "server.js",
+  "description": "Webhook cho Facebook Messenger (CAHA)",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "body-parser": "^1.20.2"
+    "express": "^4.19.2",
+    "body-parser": "^1.20.2",
+    "axios": "^1.6.8"
   }
 }
