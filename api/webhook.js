@@ -11,7 +11,7 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN || "caha_verify_token";
 const PAGE_TOKEN   = process.env.PAGE_ACCESS_TOKEN || "";
 
 // Test route
-app.get("/", (_req, res) => res.send("CAHA Webhook is running 🚀"));
+app.get("/", (_req, res) => res.send("CAUHAI Webhook is running 🚀"));
 
 // Facebook verify webhook
 app.get("/api/webhook", (req, res) => {
