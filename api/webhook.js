@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Lấy token từ biến môi trường
-const VERIFY_TOKEN = process.env.VERIFY_TOKEN || "caha_verify_token";
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN || "cauhai_verify_token";
 const PAGE_TOKEN   = process.env.PAGE_ACCESS_TOKEN || "";
 
 // Test route
@@ -39,7 +39,7 @@ app.post("/api/webhook", async (req, res) => {
         if (!psid) continue;
 
         if (ev.message?.text) {
-          await sendText(psid, `CAHA 👋 Anh/chị vừa nhắn: "${ev.message.text}"`);
+          await sendText(psid, `CAU HAI 👋 Anh/chị vừa nhắn: "${ev.message.text}"`);
         } else if (ev.postback?.payload) {
           await sendText(psid, `Anh/chị vừa bấm: ${ev.postback.payload}`);
         }
