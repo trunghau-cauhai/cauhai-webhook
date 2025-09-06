@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>Đăng nhập Facebook — Cậu Hai Home Decor</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; margin: 24px; line-height: 1.5; }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    button { padding: 10px 16px; font-size: 16px; cursor: pointer; }
+    pre { background: #f6f7f8; padding: 12px; border-radius: 8px; overflow: auto; }
+    .muted { color: #666; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Đăng nhập bằng Facebook (demo)</h1>
+    <p class="muted">App ID: <code>1181036240494792</code> — phiên bản Graph v23.0</p>
+
+    <button id="fb-login">Login with Facebook</button>
+    <button id="fb-status" style="margin-left:8px;">Kiểm tra trạng thái</button>
+
+    <h3>Kết quả</h3>
+    <pre id="out">Chưa đăng nhập.</pre>
+
+    <p class="muted">
+      Lưu ý: Trang này chỉ phục vụ thử nghiệm. Sau khi login thành công, token sẽ được gửi về server
+      <code>/api/debug-token</code> để xác minh hợp lệ.
+    </p>
+  </div>
+
+  <!-- FB SDK -->
+  <div id="fb-root"></div>
+  <script>
+    // Khởi tạo SDK khi tải xong
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '1181036240494792',
+        cookie: true,
+        xfbml: false,
+        version: 'v23.0'
+      });
+      // Kiểm tra trạng thái ngay khi vào trang
+      FB.getLoginStatus(showStatus);
+    };
+
+    // Nạp SDK async
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/vi_VN/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    const $out = document.getElementById('out');
+    const print = (obj) => $out.textContent = (typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2));
+
+    // Hiển thị trạng thái hiện tại
+    function showStatus(response) {
+      print({ status: response.status, authResponse: !!response.authResponse });
+      if (response.authResponse) {
+        // Lấy profile tối thiểu phía client (demo)
+        FB.api('/me', { fields: 'id,name,email,picture' }, function (profile) {
+          print({ status: response.status, profile });
+        });
+      }
+    }
+
+    // Đăng nhập xin scope "email"
+    document.getElementById('fb-login').onclick = function () {
+      FB.login(async function (res) {
+        if (res.authResponse) {
+          const accessToken = res.authResponse.accessToken;
+          // Gọi Graph từ client (demo)
+          FB.api('/me', { fields: 'id,name,email,picture' }, function (profile) {
+            print({ login: 'ok (client)', profile });
+          });
+          // Gửi token về server để xác minh qua /api/debug-token
+          try {
+            const r = await fetch('/api/debug-token?access_token=' + encodeURIComponent(accessToken));
+            const j = await r.json();
+            console.log('Server verify:', j);
+          } catch (e) {
+            console.error(e);
+          }
+        } else {
+          print('Người dùng hủy hoặc chưa cấp quyền.');
+        }
+      }, { scope: 'email', return_scopes: true });
+    };
+
+    // Nút kiểm tra trạng thái
+    document.getElementById('fb-status').onclick = function () {
+      FB.getLoginStatus(showStatus);
+    };
+  </script>
+</body>
+</html>
