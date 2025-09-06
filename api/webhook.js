@@ -18,16 +18,20 @@ module.exports = async (req, res) => {
     if (body.object === "page") {
       for (const entry of body.entry) {
         for (const event of entry.messaging || []) {
-          const psid = event?.sender?.id;
-          const text = event?.message?.text;
+          const psid    = event?.sender?.id;
+          const text    = event?.message?.text;
           const postback = event?.postback;
+
+          // Trả lời cơ bản
           if (psid && PAGE_TOKEN) {
             if (postback?.payload === "GET_STARTED") {
               await sendText(psid, "Chào mừng đến Cậu Hai Home Decor ✨ Gõ 'menu' để xem gợi ý.");
             } else if (text) {
               const t = text.trim().toLowerCase();
               if (t === "menu") {
-                await sendText(psid, "Menu:\n- Trang trí: https://cauhaihomedecor.vn/collections/trang-tri\n- Gối/Chăn: https://cauhaihomedecor.vn/collections/vo-goi-sofa\n- Bếp/Bàn ăn: https://cauhaihomedecor.vn/collections/nha-bep-ban-an");
+                await sendText(psid,
+                  "Menu:\n- Trang trí: https://cauhaihomedecor.vn/collections/trang-tri\n- Gối/Chăn: https://cauhaihomedecor.vn/collections/vo-goi-sofa\n- Bếp/Bàn ăn: https://cauhaihomedecor.vn/collections/nha-bep-ban-an"
+                );
               } else {
                 await sendText(psid, `Bạn vừa nói: ${text}`);
               }
