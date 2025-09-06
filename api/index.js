@@ -1,4 +1,4 @@
-// GET https://<project>.vercel.app/api
+// api/index.js
 module.exports = (req, res) => {
   res.status(200).send("CAUHAI Webhook is running (Vercel Functions)");
 };
