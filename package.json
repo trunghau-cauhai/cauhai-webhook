@@ -1,7 +1,7 @@
 {
-  "name": "caha-webhook",
+  "name": "cauhai-webhook",
   "version": "1.0.0",
-  "description": "Webhook cho Facebook Messenger (CAHA)",
+  "description": "Webhook cho Facebook Messenger (CAUHAI)",
   "main": "api/webhook.js",
   "scripts": {
     "start": "node api/webhook.js"
