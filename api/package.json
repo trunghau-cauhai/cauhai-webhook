@@ -1,0 +1,8 @@
+{
+  "name": "cauhai-webhook",
+  "private": true,
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.32.0",
+    "@upstash/redis": "^1.28.4"
+  }
+}
